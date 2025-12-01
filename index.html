@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>RentCar - Wynajem Samochodów</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f7f7f7;
+        }
+
+        /* Kolorowe menu */
+        nav {
+            background: linear-gradient(90deg, #ff595e, #ffca3a, #8ac926, #1982c4, #6a4c93);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: #1982c4;
+            color: white;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .car-list {
+            max-width: 900px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .car {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .car:hover {
+            transform: scale(1.03);
+        }
+
+        .car img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .rent-btn {
+            display: block;
+            background: #ff595e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .rent-btn:hover {
+            background: #d54448;
+        }
+
+        /* Popup */
+        #popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popup .box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 300px;
+            text-align: center;
+        }
+
+        #popup button {
+            margin-top: 20px;
+            background: #1982c4;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Kolorowe menu -->
+    <nav>
+        <a href="#home">Strona główna</a>
+        <a href="#cars">Samochody</a>
+        <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <header id="home">
+        <h1>RentCar</h1>
+        <p>Najlepszy wynajem samochodów w Twoim mieście!</p>
+    </header>
+
+    <section id="cars">
+        <div class="car-list">
+
+            <div class="car">
+                <img src="https://via.placeholder.com/400x250?text=BMW+X5" alt="BMW X5">
+                <h3>BMW X5</h3>
+                <p>250 zł / dzień</p>
+                <a onclick="rentCar('BMW X5')" class="rent-btn">Wynajmij</a>
+            </div>
+
+            <div class="car">
+                <img src="https://via.placeholder.com/400x250?text=Audi+A4" alt="Audi A4">
+                <h3>Audi A4</h3>
+                <p>180 zł / dzień</p>
+                <a onclick="rentCar('Audi A4')" class="rent-btn">Wynajmij</a>
+            </div>
+
+            <div class="car">
+                <img src="https://via.placeholder.com/400x250?text=Toyota+Yaris" alt="Toyota Yaris">
+                <h3>Toyota Yaris</h3>
+                <p>120 zł / dzień</p>
+                <a onclick="rentCar('Toyota Yaris')" class="rent-btn">Wynajmij</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="kontakt" style="text-align:center; padding:40px;">
+        <h2>Kontakt</h2>
+        <p>📞 Telefon: 123 456 789</p>
+        <p>📧 Email: kontakt@rentcar.pl</p>
+    </section>
+
+    <!-- Popup -->
+    <div id="popup">
+        <div class="box">
+            <h3 id="popup-title"></h3>
+            <p>Dziękujemy za zgłoszenie! Skontaktujemy się z Tobą wkrótce.</p>
+            <button onclick="closePopup()">Zamknij</button>
+        </div>
+    </div>
+
+    <script>
+        function rentCar(car) {
+            document.getElementById("popup-title").innerText = "Wynajem: " + car;
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
