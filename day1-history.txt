@@ -1,0 +1,300 @@
+sudo apt-get update
+sudo apt-get install curl apt-transport-https -y 
+lsmod | grep overlay 
+lsmod | grep br_netfilter
+modprobe br_netfilter 
+sudo modprobe br_netfilter 
+lsmod | grep br_netfilter
+sudo sysctl -a | grep ip_forward 
+sudo vi /etc/sysctl.d/kubernetes.conf
+sudo sysctl -a | grep nf-call
+sudo vi /etc/sysctl.d/kubernetes.conf
+vi /etc/modules-load.d/kubernetes.conf
+sudo vi /etc/modules-load.d/kubernetes.conf
+sudo sysctl --system 
+sudo apt-get install containerd -y
+vi /etc/containerd/config.toml 
+sudo containerd config default | sudo tee /etc/containerd/config.toml 
+vi /etc/containerd/config.toml
+sudo vi /etc/containerd/config.toml
+sudo systemctl restart containerd
+sudo swapon -s
+vi /etc/fstab 
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-get update
+audo apt-cache madison kubeadm 
+saudo apt-cache madison kubeadm 
+sudo apt-cache madison kubeadm 
+sudo apt-get install -y kubeadm=1.32.8-1.1 kubelet=1.32.8-1.1 kubectl=1.32.8-1.1 
+sudo apt-mark hold kubelet kubectl kubeadm 
+sudo kubeadm init --help 
+ip a 
+sudo kubeadm init --pod-network-cidr 192.168.0.0/8 
+mkdir -p $HOME/.kube 
+df -h
+sudo -i
+mkdir -p $HOME/.kube 
+ls -la 
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl get nodes 
+kubectl get po -n kube-system 
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+cilium install 
+kubectl get po -n kube-system 
+watch -n1 kubectl get po -A
+kubectl get nodes
+sudo kubeadm token create --print-join-command
+kubectl get nodes
+watch -n1 kubectl get nodes
+watch -n1 kubectl get pod -A
+kubectl get nodes
+watch -n1 kubectl get nodes
+kubectl get nodes
+kubectl get pod -A
+kubectl cluster-info
+kubectl get nodes
+kubectl describe node master
+kubectl describe node worker1
+kubectl describe node worker2 | grep -i taint
+git clone https://github.com/mariano-italiano/kubernetes-sm1.git
+cd kubernetes-sm1/
+mkdir day1
+vi deploy-k8s-ubuntu.sh
+vi deploy-k8s-rhel.sh
+cd day1/
+ls -la 
+vi first-pod.yaml
+kubectl run first-pod --image nginx:1.19.2
+kubectl run first-pod --image nginx:1.19.2 --dry-run=client -o yaml 
+kubectl run first-pod --image nginx:1.19.2 --dry-run=client -o yaml  > first-pod.yaml 
+vi first-pod.yaml
+kubectl get po
+kubectl delete po first-pod
+kubectl apply -f first-pod.yaml  
+kubectl delete -f first-pod.yaml 
+kubectl create -f first-pod.yaml
+kubectl apply -f first-pod.yaml  
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml  
+kubectl get po --show-labels
+kubectl get ns 
+kubectl get po 
+kubectl get deploy 
+kubectl get all -n cilium-secrets
+kubectl get secret -n cilium-secrets
+kubectl get po -A
+kubectl apply -f first-pod.yaml -n kube-system 
+kubectl get po -A
+kubectl get po
+kubectl get po -n kube-system 
+kubectl get po --selector app=web-critical 
+kubectl get po --selector app=web-critical  -A 
+kubectl get po --selector app  -A 
+kubectl delete po -l app -A
+kubectl api-resources 
+kubectl api-resources | grep -i job 
+kubectl api-resources | grep true | wc -l
+kubectl api-resources | grep false | wc -l
+kubectl run ubuntu --image ubuntu 
+watch -n1 kubectl get po
+kubectl run ubuntu --image ubuntu --dry-run=client -o yaml > ubuntu-pod.yaml
+vi ubuntu-pod.yaml
+kubectl apply -f ubuntu-pod.yaml 
+watch -n1 kubectl get po
+kubectl get pod
+kubectl delete po ubuntu-pod.yaml 
+kubectl delete po ubuntu
+sudo apt-get install bash-completion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+source ~/.bashrc
+kubectl get po ubuntu-pod 
+kubectl get po --show-labels 
+kubectl get po --show-labels -A
+kubectl get po --show-labels -l tier=control-plane 
+kubectl get po --show-labels -l tier=control-plane -A
+kubectl get po --show-labels -l 'component notin(etcd),tier=control-plane' -A
+kubectl get po 
+kubectl get po --v 8
+kubectl get po --v 5
+kubectl get po --v 3
+kubectl get po --v 1
+kubectl get po --v 8
+curl -x GET https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+curl -X GET https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+curl -X -k GET https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+curl -k -X GET https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+ls -la /etc/kubernetes/pki/
+vi $HOME/.kube/config
+grep client-cert $HOME/.kube/config |cut -d " " -f 6 
+export client=$(grep client-cert $HOME/.kube/config |cut -d " " -f 6 )
+export key=$(grep client-key $HOME/.kube/config |cut -d " " -f 6 )
+export ca=$(grep certificate-authority-data $HOME/.kube/config |cut -d " " -f 6 )
+echo $key 
+echo $ca
+echo $key |base64 -d - > client.key 
+vi client.key 
+echo $client | base64 -d - > client.pem
+vi client.pem
+echo $ca | base64 -d - > ca.pem
+vi ca.pem 
+curl -k -X GET https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+curl -k -X GET --cert client.pem --key client.key --cacert ca.pem https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 
+curl -k -X GET --cert client.pem --key client.key --cacert ca.pem https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 |jq -r '.items[].metadata.name'
+curl -s -k -X GET --cert client.pem --key client.key --cacert ca.pem https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 |jq -r '.items[].metadata.name'
+kubectl run test-pod --image nginx
+kubectl run test-pod --image alpine
+kubectl run alpine-pod --image alpine
+curl -s -k -X GET --cert client.pem --key client.key --cacert ca.pem https://192.168.189.128:6443/api/v1/namespaces/default/pods?limit=500 |jq -r '.items[].metadata.name'
+kubectl get svc -A
+kubectl get svc -A --v 8
+curl -s -k -X GET --cert client.pem --key client.key --cacert ca.pem https://192.168.189.128:6443/api/v1/services?limit=500 |jq -r '.items[].metadata.name'
+vi $HOME/.kube/config
+kubectl config get-contexts
+kubectl config current-context 
+kubectl config use-context kubernetes-admin@kubernetes 
+kubectl get po 
+kubectl delete po alpine-pod --v 7
+kubectl get po -A
+vi sidecar-pod.yaml
+kubectl apply -f sidecar-pod.yaml 
+kubectl get pod
+cp -rp sidecar-pod.yaml doubled-web.yaml
+vi doubled-web.yaml
+kubectl apply doubled-web.yaml
+kubectl apply -f doubled-web.yaml
+kubectl get pod
+watch -n1 kubectl get pod
+kubectl logs doubled-web 
+kubectl logs doubled-web --all-containers  
+/01 12:38:52 [notice] 1#1: using the "epoll" event method
+2025/12/01 12:38:52 [notice] 1#1: nginx/1.29.3
+2025/12/01 12:38:52 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19)
+2025/12/01 12:38:52 [notice] 1#1: OS: Linux 6.8.0-79-generic
+2025/12/01 12:38:52 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/12/01 12:38:52 [notice] 1#1: start worker processes
+kubectl logs doubled-web --all-containers  
+watch -n1 kubectl get pod
+vi doubled-web.yaml 
+kubectl replace --force -f doubled-web.yaml 
+watch -n1 kubectl get pod
+kubectl events
+vi doubled-web.yaml 
+kubectl replace --force -f doubled-web.yaml 
+watch -n1 kubectl get pod
+kubectl logs sidecar-pod 
+kubectl logs sidecar-pod -c busybox1 
+kubectl exec -it sidecar-pod -c busybox1 -- ls -la /output
+kubectl exec -it sidecar-pod -c busybox1 -- bash
+kubectl exec -it sidecar-pod -c busybox1 -- sh
+kubectl exec -it sidecar-pod -c sidecar -- sh
+kubectl logs sidecar-pod --all-containers 
+kubectl logs sidecar-pod 
+watch -n1 kubectl get pod
+vi init-container.yaml
+kubectl apply -f init-container.yaml
+vi init-container.yaml
+kubectl apply -f init-container.yaml
+watch -n1 kubectl get pods 
+kubectl logs init-container 
+kubectl logs init-container -c delay 
+kubectl logs init-container -c prepare
+kubectl get po -o wide 
+kubectl run web-pod --image nginx -o yaml --dry-run=client > web-pod.yaml
+vi web-pod.yaml
+kubectl apply -f web-pod.yaml
+kubectl get po 
+kubectl events
+vi web-pod.yaml
+kubectl replace --force -f web-pod.yaml
+kubectl get po 
+vi web-pod.yaml
+kubectl replace --force -f web-pod.yaml
+kubectl get po 
+kubectl logs web-pod 
+kubectl logs web-pod -c svc-wait
+kubectl get po 
+kubectl get po --show-labels 
+kubectl expose po web-pod --port 80 --name web-pod-svc 
+kubectl get po --show-labels 
+watch -n1 kubectl get po --show-labels 
+kubectl get svc
+kubectl exec -it web-pod -c svc-wait -- bash
+kubectl exec -it web-pod -c svc-wait -- sh
+kubectl get svc
+kubectl get po --show-labels 
+kubectl exec -it web-pod -c svc-wait -- sh
+kubectl delete svc web-pod-svc 
+vi web-pod.yaml 
+kubectl replace --force -f web-pod.yaml
+kubectl get po --show-labels 
+kubectl expose po web-pod --port 80 --name web-pod-svc 
+watch -n1 kubectl get po --show-labels 
+kubectl logs web-pod -c svc-wait
+kubectl get po
+kubectl get po --show-labels 
+kubectl label pod doubled-web kubernetes.io/zone=az1 
+kubectl get po --show-labels 
+kubectl label pod doubled-web kubernetes.io/zone=az2
+kubectl label pod doubled-web zone=az2
+kubectl get po --show-labels 
+kubectl describe pod doubled-web 
+kubectl describe pod doubled-web | grep -i annota
+kubectl annotate pod doubled-web createdBy="Marcin Kujawski, date: 1.12.2025, SNOW CHG: RITM12345" 
+kubectl describe pod doubled-web | grep -i annota
+kubectl annotate pod doubled-web lcmVersion="LCM 5.1.2 "
+kubectl describe pod doubled-web | grep -i annota -A 3
+kubectl annotate pod doubled-web lcmVersion-
+kubectl describe pod doubled-web | grep -i annota -A 3
+kubectl get po --show-labels 
+kubectl label pod doubled-web zone-
+kubectl get po --show-labels 
+kubectl get po -l run 
+kubectl get po -l kubernetes.io/zone=az23
+kubectl get po -l kubernetes.io/zone=az1
+kubectl logs -l kubernetes.io/zone=az1
+kubectl logs deploy/dep1
+watch -n1 kubectl get po
+watch -n1 kubectl get po -o wide
+kubectl run web-pod --image nginx -o yaml --dry-run=client
+watch -n1 kubectl get po -o wide
+kubectl get po
+kubectl delete pod static-pod-worker1 
+watch -n1 kubectl get po -o wide
+kubectl get op -n kube-system
+kubectl get po -n kube-system
+kubectl get po
+kubectl get po -o wide
+kubectl replace --force -f ubuntu-pod.yaml 
+kubectl get po -o wide
+kubectl exec -it sidecar-pod -- sh
+kubectl get po 
+kubectl get svc
+kubectl describe po init-container 
+kubectl expose po init-container --port 80 --name clusterip-svc 
+kubectl label po init-container app=web
+kubectl expose po init-container --port 80 --name clusterip-svc 
+kubectl get svc
+kubectl exec -it sidecar-pod -- sh
+kubectl create ns test
+kubectl apply -f init-container.yaml -f test 
+kubectl apply -f init-container.yaml -n test 
+kubectl get po -n test
+kubectl exec -it -n test init-container -- bash
+kubectl expose pod init-container --port 80 --name nodeport-svc --type NodePort
+kubectl get svc
+kubectl get node -o wide
+kubectl expose pod  init-container --port 80 --name lb-svc --type LoadBalancer 
+kubectl get svc
+kubectl edit svc lb-svc 
+kubectl get svc
+history 
+history | awk '$1 > 290' | cut -c 8-
+history | awk '$1 > 129' | cut -c 8- > ../day1-history.txt
