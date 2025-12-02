@@ -1,0 +1,254 @@
+vi my-replicaset.yaml
+kubectl get node
+kubectl apply -f my-replicaset.yaml 
+kubectl get po,rs
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml 
+kubectl get po,rs
+kubectl delete -f my-replicaset.yaml 
+kubectl apply -f my-replicaset.yaml 
+kubectl get po,rs
+watch -n1 kubectl get po,rs
+kubectl get po,rs
+kubectl delete po my-replicaset-w2w6l my-replicaset-lmf87 
+kubectl get po,rs
+kubectl scale rs my-replicaset --replicas=10
+kubectl get po,rs
+kubectl get po,rs --show-labels 
+kubectl scale rs my-replicaset --replicas=3
+kubectl get po,rs --show-labels 
+kubectl label pod web-pod tier=frontend 
+kubectl label pod ubuntu-pod tier=frontend 
+kubectl get po,rs --show-labels 
+kubectl label pod ubuntu-pod tier-
+kubectl label pod web-pod tier-
+kubectl get po,rs --show-labels 
+cp my-replicaset.yaml my-deployment.yaml
+vi my-deployment.yaml
+kubectl edit svc clusterip-svc 
+kubectl get svc
+kubectl exec -it web-pod -- sh
+kubectl get po -A
+kubectl get po -A --show-labels 
+kubectl edit svc clusterip-svc 
+kubectl get po -A --show-labels 
+kubectl get svc --show-lan
+kubectl get svc --show-labels 
+kubectl exec -it web-pod -- sh
+kubectl exec -it web-pod -- bash
+kubectl edit svc clusterip-svc 
+vi my-deployment.yaml 
+kubectl apply -f my-deployment.yaml
+kubectl get po,deploy
+kubectl get po,deploy,rs
+kubectl describe deploy my-deployment 
+kubectl edit deployments.apps my-deployment 
+kubectl set image deployments my-deployment web=nginx:1.19.2
+kubectl rollout status deployment my-deployment 
+kubectl get pod
+kubectl annotate deployments.apps my-deployment kubernetes.io/change-cause="upgrade z wersji 1.14.2 do 1.19.2, date: 2.12.2025, implementer: Marcin" 
+kubectl rollout history deployment my-deployment 
+kubectl set image deployments my-deployment web=nginx:1.19.
+kubectl annotate deployments.apps my-deployment kubernetes.io/change-cause="upgrade z wersji 1.19.2 do wersji 1.19.4" 
+kubectl rollout history deployment my-deployment 
+kubectl rollout status deployment my-deployment 
+kubectl rollout undo deployment my-deployment --revision 2
+kubectl rollout undo deployment my-deployment --revision=2
+kubectl rollout undo deployment my-deployment --to-revision 2
+kubectl rollout status deployment my-deployment 
+kubectl rollout history deployment my-deployment 
+kubectl set image deployments my-deployment web=nginx:latest
+kubectl annotate deployments.apps my-deployment kubernetes.io/change-cause="upgrade do wersji latest" 
+kubectl rollout history deployment my-deployment 
+kubectl edit deployments.apps my-deployment 
+kubectl set image deployments my-deployment web=nginx:broken 
+kubectl annotate deployments.apps my-deployment kubernetes.io/change-cause="upgrade do wersji broken" 
+kubectl rollout history deployment my-deployment 
+kubectl rollout undo deployment my-deployment --to-revision 5
+kubectl rollout history deployment my-deployment 
+kubectl edit deployments.apps my-deployment 
+kubectl rollout restart deployment my-deployment 
+kubectl set image deployments my-deployment web=httpd --record 
+kubectl rollout history deployment my-deployment 
+kubectl annotate deployments.apps my-deployment kubernetes.io/change-cause="upgrade z nginx do httpd" 
+kubectl rollout history deployment my-deployment 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+kubectl get po -n kube-system
+kubectl get po -n kubernetes-dashboard
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+vi components.yaml 
+kubectl apply -f components.yaml 
+kubectl get po -n kube-system
+kubectl get po -n kubernetes-dashboard
+kubectl get svc -n kubernetes-dashboard 
+kubectl edit svc -n kubernetes-dashboard kubernetes-dashboard 
+kubectl get svc -n kubernetes-dashboard 
+ip a
+ku
+kubectl get cluster-role
+kubectl get clusterrole
+kubectl get sa
+kubectl get sa -n kubernetes-dashboard 
+kubectl create clusterrolebinding --help 
+kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:kubernetes-dashboard 
+kubectl create token kubernetes-dashboard -n kubernetes-dashboard 
+vi my-daemonset.yaml
+kubectl describe node master 
+vi my-daemonset.yaml
+kubectl apply -f my-daemonset.yaml
+kubectl get po -o wide
+kubectl get po -o wide -n kube-system
+vi my-daemonset.yaml 
+kubectl apply -f my-daemonset.yaml 
+kubectl get po -o wide
+kubectl exec -it web-pod -- bash 
+kubectl get ingressclasses.networking.k8s.io 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl get all -n ingress-nginx 
+watch -n1 kubectl get all -n ingress-nginx 
+kubectl get svc
+kubectl delete all --all 
+kubectl get all
+kubectl create deploy cars --image nginx --replicas 1 
+kubectl create deploy books  --image nginx --replicas 1 
+kubectl expose deployment cars --port 80 --name cars-svc
+kubectl expose deployment books --port 80 --name books-svc
+kubectl get po,svc
+kubectl get ingressclasses.networking.k8s.io 
+kubectl get svc -n ingress-nginx 
+kubectl edit svc -n ingress-nginx  ingress-nginx-controller 
+kubectl get svc -n ingress-nginx 
+vi index-cars.html
+vi index-books.html
+kubectl cp index-cars.html cars-6664876f54-8xmgs:/usr/share/nginx/html/index.html
+kubectl cp index-books.html books-7c7bd6c74f-7r9d4:/usr/share/nginx/html/index.html
+vi web-ingress.yaml
+kubectl apply -f web-ingress.yaml 
+kubectl describe ingress minimal-ingress 
+vi web-ingress.yaml
+kubectl apply -f web-ingress.yaml 
+kubectl describe ingress minimal-ingress 
+kubectl get pod 
+kubectl rollout restart deployment cars 
+kubectl rollout restart deployment books 
+kubectl get pod 
+sudo apt-get install nfs-common cifs-utils -y nfs-kernel-server 
+sudo -i
+vi nfs-pod.yaml
+cp index-cars.html /var/nfs-share/
+sudo cp index-cars.html /var/nfs-share/
+sudo cp index-cars.html /var/nfs-share/index.html
+kubectl apply -f nfs-pod.yaml 
+kubectl get po
+kubectl events
+kubectl get po
+kubectl get po -o wide
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get po -o wide
+kubectl events
+kubectl get node -o wide
+sudo vi /etc/exports 
+sudo exportfs
+kubectl get node -o wide
+kubectl get po -o wide
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get po -o wide
+sudo exportfs
+kubectl get po -o wide
+kubectl events
+kubectl get po -o wide
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get po -o wide
+kubectl events
+sudo vi /etc/exports 
+sudo exportfs
+kubectl replace --force -f nfs-pod.yaml 
+systemctl statu ufw
+systemctl status ufw
+kubectl get po -o wide
+sudo systemctl stop ufw
+kubectl get po -o wide
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get po -o wide
+sudo systemctl restart nfs-kernel-server
+sudo exportfs
+sudo vi /etc/exports 
+sudo exportfs
+sudo vi /etc/exports 
+sudo exportfs
+ls -la /var/nfs-share
+sudo vi /etc/exports 
+sudo exportfs -rav
+sudo systemctl restart nfs-kernel-server
+kubectl get po
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get po
+kubectl get po --show-labels 
+kubectl label po nfs-pod app=nfs
+kubectl get po --show-labels 
+kubectl expose pod nfs-pod --name nfs-pod-svc --port 80
+kubectl delete svc nfs-pod-svc 
+kubectl expose pod nfs-pod --name nfs-pod-svc --port 80 --type NodePort
+kubectl get svc
+kubectl exec -it nfs-pod -- bash
+vi nfs-pod.yaml 
+sudo chmod 777 /var/nfs-share -R
+kubectl replace --force -f nfs-pod.yaml 
+kubectl label po nfs-pod app=nfs
+kubectl exec -it nfs-pod -- bash
+kubectl get po
+kubectl exec -it nfs-pod -- bash
+cat /var/nfs-share/index.html 
+kubectl exec -it nfs-pod -- bash
+kubectl replace --force -f nfs-pod.yaml 
+kubectl label po nfs-pod app=nfs
+vi test-pv.yaml
+kubectl get sc
+kubectl apply -f test-pv.yaml 
+kubectl get pv
+vi test-pvc.yaml
+kubectl apply -f test-pvc.yaml 
+kubectl get pv,pvc
+kubectl delete -f test-pvc.yaml 
+vi test-pvc.yaml
+kubectl apply -f test-pvc.yaml 
+kubectl get pv,pvc
+vi test-pv-pod.yaml
+kubectl apply -f test-pv-pod.yaml
+kubectl expose pod test-pv-pod --name test-pv-pod-svc --port 80 --type NodePort
+kubectl label pod test-pv-pod test=storage
+kubectl expose pod test-pv-pod --name test-pv-pod-svc --port 80 --type NodePort
+kubectl get svc
+kubectl delete po test-pv-pod 
+vi test-pv-pod.yaml 
+kubectl apply -f test-pv-pod.yaml
+kubectl label pod test-pv-pod test=storage
+kubectl get svc
+kubectl get po
+kubectl get sc
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.32/deploy/local-path-storage.yaml
+kubectl get sc
+cp -rp test-pvc.yaml dynamic-pvc.yaml
+vi dynamic-pvc.yaml
+cp -rp test-pvc.yaml dynamic-pvc.yaml
+vi dynamic-pvc.yaml
+cp -rp test-pv-pod.yaml dynamic-pv-pod.yaml
+vi dynamic-pv-pod.yaml
+kubectl get pv,pvc 
+kubectl apply -f dynamic-pvc.yaml
+kubectl get pv,pvc 
+kubectl apply -f dynamic-pv-pod.yaml
+kubectl get pv,pvc 
+watch -n1 kubectl get pv,pvc 
+kubectl delete -f dynamic-pv-pod.yaml 
+kubectl get pv,pvc 
+kubectl delete pvc dynamic-pvc 
+watch -n1 kubectl get pv,pvc 
+git status
+cd ..
+git status
+git add .
+git commit -m "adding day2 files"
+git push
+history
+history | awk '$1 > 442' | cut -c 8- > day2-history.txt
