@@ -1,0 +1,7 @@
+# config for app1
+VERSION1="1.0"
+APPPATH=/opt/applicatie1
+
+# config for app2
+VERSION2="1.4"
+SOURCE=./testdir

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data: 
+  key1: value1
+  BRANCH: 'develop-v1.0'
+  multiline: |
+    to jest multiline
+    string dla mojego 
+    kubernetesa i to jest
+    ostatnia linia tutaj o tak
+  config.json: |
+    {
+      "attr1": "value1", 
+      "attr2": "val2" 
+    } 
